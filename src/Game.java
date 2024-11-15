@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Game {
@@ -19,23 +20,27 @@ public class Game {
 
         System.out.println(player1.Name + " du är " + player1.Symbol + ", " + player2.Name + " är " + player2.Symbol);
 
-        Player activePlayer = new Player("placeHolderPlayer", '2');
-        activePlayer = player2;
+        while(true) {
+            Player activePlayer = new Player("placeHolderPlayer", '2');
+            activePlayer = player2;
 
-        while(continueGame){
-            //change turns
-            if(activePlayer == player1){
-                activePlayer = player2;
-            } else if(activePlayer == player2){
-                activePlayer = player1;
+            //each move
+            while (continueGame) {
+                //change turns
+                if (activePlayer == player1) {
+                    activePlayer = player2;
+                } else if (activePlayer == player2) {
+                    activePlayer = player1;
+                }
+
+                //print game
+                printGame();
+                //make move
+                makeMove(activePlayer);
+                //checks if we should end game
+                shouldWeEndGame();
             }
-
-            //print game
-            printGame();
-            //make move
-            makeMove(activePlayer);
-            //checks if we should end game
-            shouldWeEndGame();
+            restartGame(activePlayer);
         }
     }
 
@@ -136,6 +141,18 @@ public class Game {
         if(gamePlan[2] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[6] == p2Symbol ){
             continueGame = false;
         }
+    }
 
+    //restart game when game over
+    public void restartGame(Player activePlayer){
+        //print game
+        printGame();
+        System.out.println("Grattis " + activePlayer.Name + "! Du vann.");
+        System.out.println("Startar om spelet...");
+        System.out.println();
+        continueGame = true;
+
+        //resets gamePlan
+        Arrays.fill(gamePlan, (char) 1);
     }
 }
