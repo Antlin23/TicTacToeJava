@@ -19,6 +19,7 @@ public class Game {
         Player player2 = new Player(scanner.nextLine(), 'O');
 
         System.out.println(player1.Name + " du är " + player1.Symbol + ", " + player2.Name + " är " + player2.Symbol);
+        System.out.println("Speldraget anges med 1-9");
 
         while(true) {
             Player activePlayer = new Player("placeHolderPlayer", '2');
@@ -53,11 +54,18 @@ public class Game {
     //play move
     public void makeMove(Player activePlayer){
         Scanner scanner = new Scanner(System.in);
-        System.out.println(activePlayer.Name + ", vart vill du spela? 1-9");
+        System.out.println(activePlayer.Name + ", vart vill du spela?");
 
-        Integer activePlayersMove = scanner.nextInt() - 1;
+        while(true){
+            Integer activePlayersMove = scanner.nextInt() - 1;
 
-        gamePlan[activePlayersMove] = activePlayer.Symbol;
+            if(gamePlan[activePlayersMove] == 1){
+                gamePlan[activePlayersMove] = activePlayer.Symbol;
+                break;
+            } else{
+                System.out.println("Den platsen är redan vald. Vänligen välj en annan.");
+            }
+        }
     }
 
     //checks if someone has won or all places are chosen
