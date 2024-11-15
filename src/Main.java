@@ -32,9 +32,9 @@ public class Main {
 
             System.out.println(activePlayer.Name + ", vart vill du spela? 1-9");
 
-            Integer activePLayersMove = scanner.nextInt() - 1;
+            Integer activePlayersMove = scanner.nextInt() - 1;
 
-            game.gamePlan[activePLayersMove] = activePlayer.Symbol;
+            game.gamePlan[activePlayersMove] = activePlayer.Symbol;
 
             //checks if we should end game
             game.shouldWeEndGame();
