@@ -18,7 +18,8 @@ public class Main {
 
         Player activePlayer = new Player("placeHolderPlayer", '2');
         activePlayer = player2;
-        while(game.continueGame()){
+
+        while(game.continueGame){
             //change turns
             if(activePlayer == player1){
                 activePlayer = player2;
@@ -34,6 +35,9 @@ public class Main {
             Integer activePLayersMove = scanner.nextInt() - 1;
 
             game.gamePlan[activePLayersMove] = activePlayer.Symbol;
+
+            //checks if we should end game
+            game.shouldWeEndGame();
         }
     }
 }
