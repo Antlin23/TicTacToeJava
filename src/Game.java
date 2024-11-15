@@ -4,6 +4,9 @@ import java.util.Scanner;
 public class Game {
     char[] gamePlan = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     boolean continueGame = true;
+    private Player player1;
+    private Player player2;
+
     public Game(){
 
     }
@@ -13,10 +16,11 @@ public class Game {
         System.out.println("Välkommen till Antons tre i rad!");
         System.out.print("Spelare ett namn: ");
 
-        Player player1 = new Player(scanner.nextLine(), 'X');
+        player1 = new Player(scanner.nextLine(), 'X');
 
         System.out.print("Spelare två namn: ");
-        Player player2 = new Player(scanner.nextLine(), 'O');
+
+        player2 = new Player(scanner.nextLine(), 'O');
 
         System.out.println(player1.Name + " du är " + player1.Symbol + ", " + player2.Name + " är " + player2.Symbol);
         System.out.println("Speldraget anges med 1-9");
@@ -40,6 +44,7 @@ public class Game {
                 makeMove(activePlayer);
                 //checks if we should end game
                 shouldWeEndGame();
+
             }
             restartGame(activePlayer);
         }
@@ -91,62 +96,78 @@ public class Game {
         //PLAYER ONE
         //checks if p1 has won horizontal
         if(gamePlan[0] == p1Symbol && gamePlan[1] == p1Symbol && gamePlan[2] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[3] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[5] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[6] == p1Symbol && gamePlan[7] == p1Symbol && gamePlan[8] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
 
         //checks if p1 has won vertical
         if(gamePlan[0] == p1Symbol && gamePlan[3] == p1Symbol && gamePlan[6] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[1] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[7] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[2] == p1Symbol && gamePlan[5] == p1Symbol && gamePlan[8] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
 
         //checks if p1 has won diagonal
         if(gamePlan[0] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[8] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[2] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[6] == p1Symbol ){
+            player1.gamesWon++;
             continueGame = false;
         }
 
         //PLAYER TWO
         //checks if p2 has won horizontal
         if(gamePlan[0] == p2Symbol && gamePlan[1] == p2Symbol && gamePlan[2] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[3] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[5] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[6] == p2Symbol && gamePlan[7] == p2Symbol && gamePlan[8] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
 
         //checks if p2 has won vertical
         if(gamePlan[0] == p2Symbol && gamePlan[3] == p2Symbol && gamePlan[6] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[1] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[7] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[2] == p2Symbol && gamePlan[5] == p2Symbol && gamePlan[8] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
 
         //checks if p2 has won diagonal
         if(gamePlan[0] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[8] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
         if(gamePlan[2] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[6] == p2Symbol ){
+            player2.gamesWon++;
             continueGame = false;
         }
     }
@@ -156,9 +177,14 @@ public class Game {
         //print game
         printGame();
         System.out.println("Grattis " + activePlayer.Name + "! Du vann.");
-        System.out.println("Startar om spelet...");
         System.out.println();
         continueGame = true;
+
+        System.out.println(player1.Name + "s vinster: " + player1.gamesWon);
+        System.out.println(player2.Name + "s vinster: " + player2.gamesWon);
+        System.out.println();
+        System.out.println("Startar om spelet...");
+        System.out.println();
 
         //resets gamePlan
         Arrays.fill(gamePlan, (char) 1);
