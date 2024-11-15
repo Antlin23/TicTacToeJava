@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Game {
     char[] gamePlan = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     boolean continueGame = true;
@@ -5,10 +7,52 @@ public class Game {
 
     }
 
+    public void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Välkommen till Antons tre i rad!");
+        System.out.print("Spelare ett namn: ");
+
+        Player player1 = new Player(scanner.nextLine(), 'X');
+
+        System.out.print("Spelare två namn: ");
+        Player player2 = new Player(scanner.nextLine(), 'O');
+
+        System.out.println(player1.Name + " du är " + player1.Symbol + ", " + player2.Name + " är " + player2.Symbol);
+
+        Player activePlayer = new Player("placeHolderPlayer", '2');
+        activePlayer = player2;
+
+        while(continueGame){
+            //change turns
+            if(activePlayer == player1){
+                activePlayer = player2;
+            } else if(activePlayer == player2){
+                activePlayer = player1;
+            }
+
+            //print game
+            printGame();
+            //make move
+            makeMove(activePlayer);
+            //checks if we should end game
+            shouldWeEndGame();
+        }
+    }
+
     public void printGame(){
         System.out.println(gamePlan[0] + " " + gamePlan[1] + " " + gamePlan[2]);
         System.out.println(gamePlan[3] + " " + gamePlan[4] + " " + gamePlan[5]);
         System.out.println(gamePlan[6] + " " + gamePlan[7] + " " + gamePlan[8]);
+    }
+
+    //play move
+    public void makeMove(Player activePlayer){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println(activePlayer.Name + ", vart vill du spela? 1-9");
+
+        Integer activePlayersMove = scanner.nextInt() - 1;
+
+        gamePlan[activePlayersMove] = activePlayer.Symbol;
     }
 
     //checks if someone has won or all places are chosen
