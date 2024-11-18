@@ -12,6 +12,7 @@ public class Game {
     }
 
     public void main(String[] args) {
+        boolean someoneHasWon = false;
         Scanner scanner = new Scanner(System.in);
         System.out.println("Välkommen till Antons tre i rad!");
         System.out.print("Spelare ett namn: ");
@@ -42,11 +43,11 @@ public class Game {
                 printGame();
                 //make move
                 makeMove(activePlayer);
-                //checks if we should end game
-                shouldWeEndGame();
+                //checks if we should end game and if someone has won
+                someoneHasWon = shouldWeEndGame();
 
             }
-            restartGame(activePlayer);
+            restartGame(activePlayer, someoneHasWon);
         }
     }
 
@@ -61,8 +62,27 @@ public class Game {
         Scanner scanner = new Scanner(System.in);
         System.out.println(activePlayer.Name + ", vart vill du spela?");
 
-        while(true){
-            Integer activePlayersMove = scanner.nextInt() - 1;
+        outerLoop:
+        while (true) {
+            int activePlayersMove;
+
+            //input validation loop
+            while (true) {
+                try {
+                    System.out.print("Ange ett nummer 1 till 9: ");
+                    activePlayersMove = scanner.nextInt() - 1;
+
+                    // Check if the number is within the valid range
+                    if (activePlayersMove < 0 || activePlayersMove > 8) {
+                        System.out.print("Ange ett nummer 1 till 9: ");
+                    } else {
+                        break;
+                    }
+                } catch (Exception e) {
+                    System.out.println("Ange ett nummer mellan 1 och 9.");
+                    scanner.nextLine();
+                }
+            }
 
             if(gamePlan[activePlayersMove] == 1){
                 gamePlan[activePlayersMove] = activePlayer.Symbol;
@@ -74,7 +94,8 @@ public class Game {
     }
 
     //checks if someone has won or all places are chosen
-    public void shouldWeEndGame(){
+    public boolean shouldWeEndGame(){
+        boolean someOneHasWon = false;
 
         //checks if all places in gamePlan are chosen, and returns false
         boolean containsOne = false;
@@ -98,38 +119,46 @@ public class Game {
         if(gamePlan[0] == p1Symbol && gamePlan[1] == p1Symbol && gamePlan[2] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[3] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[5] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[6] == p1Symbol && gamePlan[7] == p1Symbol && gamePlan[8] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
 
         //checks if p1 has won vertical
         if(gamePlan[0] == p1Symbol && gamePlan[3] == p1Symbol && gamePlan[6] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[1] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[7] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[2] == p1Symbol && gamePlan[5] == p1Symbol && gamePlan[8] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
 
         //checks if p1 has won diagonal
         if(gamePlan[0] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[8] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[2] == p1Symbol && gamePlan[4] == p1Symbol && gamePlan[6] == p1Symbol ){
             player1.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
 
         //PLAYER TWO
@@ -137,46 +166,60 @@ public class Game {
         if(gamePlan[0] == p2Symbol && gamePlan[1] == p2Symbol && gamePlan[2] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[3] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[5] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[6] == p2Symbol && gamePlan[7] == p2Symbol && gamePlan[8] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
 
         //checks if p2 has won vertical
         if(gamePlan[0] == p2Symbol && gamePlan[3] == p2Symbol && gamePlan[6] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[1] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[7] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[2] == p2Symbol && gamePlan[5] == p2Symbol && gamePlan[8] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
 
         //checks if p2 has won diagonal
         if(gamePlan[0] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[8] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
         if(gamePlan[2] == p2Symbol && gamePlan[4] == p2Symbol && gamePlan[6] == p2Symbol ){
             player2.gamesWon++;
             continueGame = false;
+            someOneHasWon = true;
         }
+
+        return someOneHasWon;
     }
 
     //restart game when game over
-    public void restartGame(Player activePlayer){
+    public void restartGame(Player activePlayer, boolean someOneHasWon){
         //print game
         printGame();
-        System.out.println("Grattis " + activePlayer.Name + "! Du vann.");
+        if(someOneHasWon){
+            System.out.println("Grattis " + activePlayer.Name + "! Du vann.");
+        } else{
+            System.out.println("Det blev oavgjort");
+        }
         System.out.println();
         continueGame = true;
 
