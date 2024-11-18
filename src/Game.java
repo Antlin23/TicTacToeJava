@@ -1,4 +1,6 @@
 import java.util.Arrays;
+import java.util.Objects;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Game {
@@ -19,7 +21,7 @@ public class Game {
 
         player1 = new Player(scanner.nextLine(), 'X');
 
-        System.out.print("Spelare två namn: ");
+        System.out.print("Spelare två namn, ange 'BOT' om du vill spela mot datorn: ");
 
         player2 = new Player(scanner.nextLine(), 'O');
 
@@ -59,36 +61,50 @@ public class Game {
 
     //play move
     public void makeMove(Player activePlayer){
-        Scanner scanner = new Scanner(System.in);
-        System.out.println(activePlayer.Name + ", vart vill du spela?");
-
-        outerLoop:
-        while (true) {
-            int activePlayersMove;
-
-            //input validation loop
-            while (true) {
-                try {
-                    System.out.print("Ange ett nummer 1 till 9: ");
-                    activePlayersMove = scanner.nextInt() - 1;
-
-                    // Check if the number is within the valid range
-                    if (activePlayersMove < 0 || activePlayersMove > 8) {
-                        System.out.print("Ange ett nummer 1 till 9: ");
-                    } else {
-                        break;
-                    }
-                } catch (Exception e) {
-                    System.out.println("Ange ett nummer mellan 1 och 9.");
-                    scanner.nextLine();
+        //BOTS MOVE
+        if(Objects.equals(activePlayer.Name, "BOT")){
+            Random random = new Random();
+            while(true) {
+                int botsMove = random.nextInt(9);
+                if (gamePlan[botsMove] == 1) {
+                    gamePlan[botsMove] = activePlayer.Symbol;
+                    break;
                 }
             }
+            System.out.println("Bot har lagt sitt drag.");
+        }
+        //PLAYERS MOVE
+        else {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println(activePlayer.Name + ", vart vill du spela?");
 
-            if(gamePlan[activePlayersMove] == 1){
-                gamePlan[activePlayersMove] = activePlayer.Symbol;
-                break;
-            } else{
-                System.out.println("Den platsen är redan vald. Vänligen välj en annan.");
+            while (true) {
+                int activePlayersMove;
+
+                //input validation loop
+                while (true) {
+                    try {
+                        System.out.print("Ange ett nummer 1 till 9: ");
+                        activePlayersMove = scanner.nextInt() - 1;
+
+                        // Check if the number is within the valid range
+                        if (activePlayersMove < 0 || activePlayersMove > 8) {
+                            System.out.print("Något gick fel, försök igen. ");
+                        } else {
+                            break;
+                        }
+                    } catch (Exception e) {
+                        System.out.print("Något gick fel, försök igen. ");
+                        scanner.nextLine();
+                    }
+                }
+
+                if (gamePlan[activePlayersMove] == 1) {
+                    gamePlan[activePlayersMove] = activePlayer.Symbol;
+                    break;
+                } else {
+                    System.out.println("Den platsen är redan vald. Vänligen välj en annan.");
+                }
             }
         }
     }
@@ -216,7 +232,11 @@ public class Game {
         //print game
         printGame();
         if(someOneHasWon){
-            System.out.println("Grattis " + activePlayer.Name + "! Du vann.");
+            if(Objects.equals(activePlayer.Name, "BOT")){
+                System.out.println("Attans, datorn vann");
+            }else {
+                System.out.println("Grattis " + activePlayer.Name + "! Du vann.");
+            }
         } else{
             System.out.println("Det blev oavgjort");
         }
